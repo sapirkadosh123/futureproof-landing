@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background-color: theme("colors.ink.DEFAULT");
+  color: #fff;
+}
+
+/* Clip any horizontal overflow at the page level so 3D image bleeds
+   never cause a horizontal scrollbar — vertical bleeds remain visible. */
+body {
+  overflow-x: hidden;
+}
+
+/* Ambient lavender depth — two soft radial gradients fixed to the viewport.
+   The top one sits behind the Hero wordmark; the bottom one sits behind
+   the Register / pen-tool area. Both stay below 8% alpha so they read as
+   "stage light" rather than overlay. */
+body {
+  background-image:
+    radial-gradient(
+      ellipse 70% 50% at 50% -5%,
+      rgba(210, 142, 255, 0.07),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 95% 100%,
+      rgba(210, 142, 255, 0.05),
+      transparent 60%
+    );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Brand-aware text selection. */
+::selection {
+  background-color: rgba(210, 142, 255, 0.35);
+  color: #fff;
+}
+
+/* Page-wide vertical-line streak — see components/motion/BackgroundLines.tsx.
+   A bright gradient block translates down each line, repeating
+   indefinitely. Opacity fades in/out at the edges of the cycle so the
+   streak appears/disappears smoothly even if the cycle endpoints fall
+   inside the viewport. */
+@keyframes hero-line-drop {
+  0% {
+    transform: translateY(-20vh);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120vh);
+    opacity: 0;
+  }
+}
+
+.hero-line-streak {
+  animation: hero-line-drop 7s linear infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-line-streak {
+    animation: none;
+    opacity: 0;
+  }
+}
